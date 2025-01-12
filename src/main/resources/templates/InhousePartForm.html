@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars Galore - Add Inhouse Part Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body style="background-color: darkgray">
+<h1>Inhouse Part Detail</h1>
+<form th:action="@{/showFormAddInPart}" th:object="${inhousepart}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" th:field="*{name}" placeholder="Enter name" />
+    </div>
+    <br>
+    <div>
+        <label for="price">Price:</label>
+        <input type="text" id="price" th:field="*{price}" placeholder="Enter price (e.g. 0.0)" />
+    </div>
+    <br>
+    <div>
+        <label for="inv">Inventory:</label>
+        <input type="number" id="inv" th:field="*{inv}" />
+        <p class="error" th:if="${#fields.hasErrors('inv')}" th:errors="*{inv}"></p>
+    </div>
+    <br>
+    <div>
+        <label for="min">Minimum Inventory:</label>
+        <input type="text" id="min" th:field="*{minInv}" placeholder="Enter minimum inventory" />
+    </div>
+    <br>
+    <div>
+        <label for="max">Maximum Inventory:</label>
+        <input type="text" id="max" th:field="*{maxInv}" placeholder="Enter maximum inventory" />
+    </div>
+    <br>
+    <div>
+        <label for="id">Part ID:</label>
+        <input type="text" id="id" th:field="*{partId}" placeholder="Enter part ID" />
+    </div>
+    <br>
+    <button type="submit">Update</button>
+</form>
+
+<p><errors path="price" cssClass=""error/><p>
+
+<a href="http://localhost:8080/">Link
+    to Main Screen</a>
+</body>
+</html>

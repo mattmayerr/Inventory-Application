@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars Galore - Add Outsourced Part Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body style="background-color: darkgray">
+<h1>Outsourced Part Detail</h1>
+
+<form action="#" th:action="@{/showFormAddOutPart}" th:object="${outsourcedpart}" method="POST"}>
+    <input type="hidden" th:field="*{id}"/>
+
+    <p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" th:field="*{name}" placeholder="Name" class="form-control mb-4 col-4"/>
+    </p>
+
+    <p>
+        <label for="price">Price:</label>
+        <input type="text" id="price" th:field="*{price}" th:placeholder="'Enter price (e.g. 0.0)'" class="form-control mb-4 col-4" />
+    </p>
+    <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
+
+    <p>
+        <label for="inv">Inventory:</label>
+        <input type="text" id="inv" th:field="*{inv}" th:placeholder="'Enter inventory'" class="form-control mb-4 col-4" />
+    </p>
+    <p th:if="${#fields.hasErrors('inv')}" th:errors="*{inv}">Inventory Error</p>
+
+    <p>
+        <label for="min">Minimum Inventory:</label>
+        <input type="text" id="min" th:field="*{minInv}" th:placeholder="'Enter minimum inventory'" class="form-control mb-4 col-4" />
+    </p>
+    <p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Min Inventory Error</p>
+
+    <p>
+        <label for="max">Maximum Inventory:</label>
+        <input type="text" id="max" th:field="*{maxInv}" th:placeholder="'Enter maximum inventory'" class="form-control mb-4 col-4" />
+    </p>
+    <p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Max Inventory Error</p>
+
+    <p>
+        <label for="cName">Company Name:</label>
+        <input type="text" id="cName" th:field="*{companyName}" placeholder="Enter company name" class="form-control mb-4 col-4" />
+    </p>
+    <p th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">Company Name Error</p>
+
+
+
+
+    <p><input type="submit" value="Submit" /></p>
+</form>
+<a href="http://localhost:8080/">Link
+    to Main Screen</a>
+</body>
+</html>
