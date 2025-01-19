@@ -10,12 +10,6 @@ import org.springframework.context.ApplicationContext;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-/**
- *
- *
- *
- *
- */
 public class EnufPartsValidator implements ConstraintValidator<ValidEnufParts, Product> {
     @Autowired
     private ApplicationContext context;
@@ -27,20 +21,34 @@ public class EnufPartsValidator implements ConstraintValidator<ValidEnufParts, P
 
     @Override
     public boolean isValid(Product product, ConstraintValidatorContext constraintValidatorContext) {
-        if(context==null) return true;
+        if (context == null) return true;
 
         ProductService repo = context.getBean(ProductServiceImpl.class);
 
+        if (product.getId() != 0) { // Existing product
+            Product existingProduct = repo.findById(product.getId());
 
+            // Calculate inventory difference
+            int inventoryDifference = product.getInv() - existingProduct.getInv();
 
-        if (product.getId() != 0) {
-            Product myProduct = repo.findById(product.getId());
-            for (Part part : myProduct.getParts()) {
-                if (part.getInv() - 1 < part.getMinInv()) {
-                    return false;
+            // Validate associated parts
+            if (inventoryDifference > 0) { // Only check if inventory increases
+                for (Part part : existingProduct.getParts()) {
+                    int adjustedInventory = part.getInv() - inventoryDifference;
+
+                    // Check if adjusted inventory falls below the minimum
+                    if (adjustedInventory < part.getMinInv()) {
+                        // Customize the error message
+                        constraintValidatorContext.disableDefaultConstraintViolation();
+                        constraintValidatorContext.buildConstraintViolationWithTemplate(
+                                "Part '" + part.getName() + "' will fall below its minimum inventory. Current: " +
+                                        part.getInv() + ", Required: " + inventoryDifference + ", Minimum: " + part.getMinInv()
+                        ).addConstraintViolation();
+                        return false; // Validation failed
+                    }
                 }
             }
         }
-        return true;
+        return true; // Validation passed
     }
 }

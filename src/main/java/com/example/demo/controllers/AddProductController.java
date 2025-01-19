@@ -56,7 +56,7 @@ public class AddProductController {
             ProductService productService = context.getBean(ProductServiceImpl.class);
             Product product2 = new Product();
             try {
-                product2 = productService.findById(product.getId());
+                product2 = productService.findById((long) product.getId());
             } catch (Exception e) {
                 System.out.println("Error Message " + e.getMessage());
             }
@@ -69,13 +69,13 @@ public class AddProductController {
             theModel.addAttribute("assparts",product2.getParts());
             return "productForm";
         }
- //       theModel.addAttribute("assparts", assparts);
- //       this.product=product;
+        //       theModel.addAttribute("assparts", assparts);
+        //       this.product=product;
 //        product.getParts().addAll(assparts);
         else {
             ProductService repo = context.getBean(ProductServiceImpl.class);
             if(product.getId()!=0) {
-                Product product2 = repo.findById(product.getId());
+                Product product2 = repo.findById((long) product.getId());
                 PartService partService1 = context.getBean(PartServiceImpl.class);
                 if(product.getInv()- product2.getInv()>0) {
                     for (Part p : product2.getParts()) {
@@ -94,12 +94,12 @@ public class AddProductController {
     }
 
     @GetMapping("/showProductFormForUpdate")
-    public String showProductFormForUpdate(@RequestParam("productID") Long theId, Model theModel) {
+    public String showProductFormForUpdate(@RequestParam("productID") int theId, Model theModel) {
         theModel.addAttribute("parts", partService.findAll());
         ProductService repo = context.getBean(ProductServiceImpl.class);
-        Product theProduct = repo.findById(theId);
+        Product theProduct = repo.findById((long) theId);
         product1=theProduct;
-    //    this.product=product;
+        //    this.product=product;
         //set the employ as a model attibute to prepopulate the form
         theModel.addAttribute("product", theProduct);
         theModel.addAttribute("assparts",theProduct.getParts());
@@ -113,16 +113,16 @@ public class AddProductController {
     }
 
     @GetMapping("/deleteproduct")
-    public String deleteProduct(@RequestParam("productID") Long theId, Model theModel) {
+    public String deleteProduct(@RequestParam("productID") int theId, Model theModel) {
         ProductService productService = context.getBean(ProductServiceImpl.class);
-        Product product2=productService.findById(theId);
+        Product product2=productService.findById((long) theId);
         for(Part part:product2.getParts()){
             part.getProducts().remove(product2);
             partService.save(part);
         }
         product2.getParts().removeAll(product2.getParts());
         productService.save(product2);
-        productService.deleteById(theId);
+        productService.deleteById((long) theId);
 
         return "confirmationdeleteproduct";
     }
@@ -133,37 +133,37 @@ public class AddProductController {
 // make the add and remove buttons work
 
     @GetMapping("/associatepart")
-    public String associatePart(@Valid @RequestParam("partID") Long theID, Model theModel){
-    //    theModel.addAttribute("product", product);
-    //    Product product1=new Product();
+    public String associatePart(@Valid @RequestParam("partID") int theID, Model theModel){
+        //    theModel.addAttribute("product", product);
+        //    Product product1=new Product();
         if (product1.getName()==null) {
             return "saveproductscreen";
         }
         else{
-        product1.getParts().add(partService.findById(theID));
-        partService.findById(theID).getProducts().add(product1);
-        ProductService productService = context.getBean(ProductServiceImpl.class);
-        productService.save(product1);
-        partService.save(partService.findById(theID));
-        theModel.addAttribute("product", product1);
-        theModel.addAttribute("assparts",product1.getParts());
-        List<Part>availParts=new ArrayList<>();
-        for(Part p: partService.findAll()){
-            if(!product1.getParts().contains(p))availParts.add(p);
-        }
-        theModel.addAttribute("availparts",availParts);
-        return "productForm";}
- //        return "confirmationassocpart";
+            product1.getParts().add(partService.findById((long) theID));
+            partService.findById((long) theID).getProducts().add(product1);
+            ProductService productService = context.getBean(ProductServiceImpl.class);
+            productService.save(product1);
+            partService.save(partService.findById((long) theID));
+            theModel.addAttribute("product", product1);
+            theModel.addAttribute("assparts",product1.getParts());
+            List<Part>availParts=new ArrayList<>();
+            for(Part p: partService.findAll()){
+                if(!product1.getParts().contains(p))availParts.add(p);
+            }
+            theModel.addAttribute("availparts",availParts);
+            return "productForm";}
+        //        return "confirmationassocpart";
     }
     @GetMapping("/removepart")
-    public String removePart(@RequestParam("partID") Long theID, Model theModel){
+    public String removePart(@RequestParam("partID") int theID, Model theModel){
         theModel.addAttribute("product", product);
-      //  Product product1=new Product();
-        product1.getParts().remove(partService.findById(theID));
-        partService.findById(theID).getProducts().remove(product1);
+        //  Product product1=new Product();
+        product1.getParts().remove(partService.findById((long) theID));
+        partService.findById((long) theID).getProducts().remove(product1);
         ProductService productService = context.getBean(ProductServiceImpl.class);
         productService.save(product1);
-        partService.save(partService.findById(theID));
+        partService.save(partService.findById((long) theID));
         theModel.addAttribute("product", product1);
         theModel.addAttribute("assparts",product1.getParts());
         List<Part>availParts=new ArrayList<>();
