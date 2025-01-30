@@ -2,9 +2,9 @@
 This is a web-based spring inventory application called Cars Galore. They sell cars, and car parts. This applciation allows Cars Galore to add parts/products willingly which includes how much of each part/product there is and what it costs. Their also is an about page which explains the company's vision and overall objective.
 
 ### The following is needed to run this application:
-Spring Boot 2.6.6 or later
-Java Version 17.0
-Maven Compiler Plugin Version 3.8.1
+Spring Boot 2.6.6 or later<br>
+Java Version 17.0<br>
+Maven Compiler Plugin Version 3.8.1<br>
 
 
 ### Recommendation
